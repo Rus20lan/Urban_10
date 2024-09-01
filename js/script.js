@@ -70,12 +70,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   mainProductsList.addEventListener('click', (e) => {
+    console.log(e.target);
     if (
-      e.target.classList.contains('main_product-card_btn-delete') ||
-      e.target.getAttribute('data-open-modal') == ''
+      e.target.getAttribute('data-open-modal') == '' ||
+      e.target.classList.contains('main_product-card_btn-delete')
     ) {
-      const delElement =
-          e.target.parentElement.parentElement.parentElement.parentElement,
+      const delElement = document.getElementById(
+          e.target.getAttribute('data-id')
+        ),
         titleElement = delElement
           .querySelector('.main__product-card_title')
           .textContent.trim();

@@ -51,8 +51,9 @@ export class Product {
                 class="main_product-card_btn-delete"
                 data-twe-ripple-init
                 data-twe-ripple-color="light"
+                data-id =${this.id}
             >
-              <svg fill="#FFFFFF" width="24px" height="24px" viewBox="0 0 0.72 0.72" xmlns="http://www.w3.org/2000/svg"><path d="M0.6 0.18h-0.12V0.15a0.09 0.09 0 0 0 -0.09 -0.09h-0.06a0.09 0.09 0 0 0 -0.09 0.09v0.03H0.12a0.03 0.03 0 0 0 0 0.06h0.03v0.33a0.09 0.09 0 0 0 0.09 0.09h0.24a0.09 0.09 0 0 0 0.09 -0.09V0.24h0.03a0.03 0.03 0 0 0 0 -0.06M0.3 0.15a0.03 0.03 0 0 1 0.03 -0.03h0.06a0.03 0.03 0 0 1 0.03 0.03v0.03h-0.12Zm0.21 0.42a0.03 0.03 0 0 1 -0.03 0.03H0.24a0.03 0.03 0 0 1 -0.03 -0.03V0.24h0.3Z"/></svg>
+              <svg data-id =${this.id} data-open-modal fill="#FFFFFF" width="24px" height="24px" viewBox="0 0 0.72 0.72" xmlns="http://www.w3.org/2000/svg"><path d="M0.6 0.18h-0.12V0.15a0.09 0.09 0 0 0 -0.09 -0.09h-0.06a0.09 0.09 0 0 0 -0.09 0.09v0.03H0.12a0.03 0.03 0 0 0 0 0.06h0.03v0.33a0.09 0.09 0 0 0 0.09 0.09h0.24a0.09 0.09 0 0 0 0.09 -0.09V0.24h0.03a0.03 0.03 0 0 0 0 -0.06M0.3 0.15a0.03 0.03 0 0 1 0.03 -0.03h0.06a0.03 0.03 0 0 1 0.03 0.03v0.03h-0.12Zm0.21 0.42a0.03 0.03 0 0 1 -0.03 0.03H0.24a0.03 0.03 0 0 1 -0.03 -0.03V0.24h0.3Z"/></svg>
                 
             </button>
         </div>
