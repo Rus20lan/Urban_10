@@ -70,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   mainProductsList.addEventListener('click', (e) => {
-    console.log(e.target);
     if (
       e.target.getAttribute('data-open-modal') == '' ||
       e.target.classList.contains('main_product-card_btn-delete')
@@ -81,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         titleElement = delElement
           .querySelector('.main__product-card_title')
           .textContent.trim();
-      console.log(titleElement);
+      // console.log(titleElement);
       openModal(titleElement, delElement);
     }
   });
@@ -250,49 +249,93 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Filter by Categories
-  accordion.addEventListener('click', (event) => {
+
+  // Вариант 1
+  accordion.addEventListener('click', async (event) => {
     let parent = event.target.parentElement;
     if (
       parent.getAttribute('data-cat') == '' &&
       event.target.tagName === 'INPUT'
     ) {
-      let id = +parent.id.replace(/\D/g, '');
-      if (event.target.checked) {
-        arrayCheck.push(id);
+      if (!event.target.checked) {
+        event.target.checked = false;
+        currentLimit = 6;
+        pagination(currentLimit);
       } else {
-        arrayCheck.splice(arrayCheck.indexOf(id), 1);
+        const checkboxs = mainCategoriesCheckboxs.querySelectorAll('input');
+        checkboxs.forEach((checkbox) => {
+          checkbox === event.target
+            ? (checkbox.checked = true)
+            : (checkbox.checked = false);
+        });
+        let id = +parent.id.replace(/\D/g, '');
+        await filteringByCaterories(arrayCategories[id]);
       }
-      let arrCat = arrayCategories.filter((item, index) =>
-        arrayCheck.includes(index)
-      );
-      console.log(arrCat);
-      filteringByCaterories(arrCat);
     }
   });
 
-  function filteringByCaterories(array) {
-    if (array.length === 0) {
-      currentLimit = 6;
-      pagination(currentLimit);
-    } else {
-      const promiseArray = array.map((category) => {
-        return fetch(
-          `https://fakestoreapi.com/products/category/${category}`
-        ).then((res) => res.json());
-      });
-      mainProductsList.innerHTML = '';
-      Promise.all(promiseArray)
-        .then((objectsArray) => {
-          objectsArray.forEach((products) => {
-            products.forEach((product) => {
-              fillDataProduct(product);
-            });
-          });
-          sumResults();
-        })
-        .catch((error) => {
-          console.error(error);
+  async function filteringByCaterories(category) {
+    try {
+      const res = await fetch(
+        `https://fakestoreapi.com/products/category/${category}`
+      );
+      if (res.status === 200) {
+        const categoryProducts = await res.json();
+        mainProductsList.innerHTML = '';
+        categoryProducts.forEach((product) => {
+          fillDataProduct(product);
         });
+        sumResults();
+      } else {
+        throw new Error(message.failure + 'Ошибка: ' + res.status);
+      }
+    } catch (error) {
+      showThanksModal(error);
     }
   }
+  // Вариант 2
+  // accordion.addEventListener('click', (event) => {
+  //   let parent = event.target.parentElement;
+  //   if (
+  //     parent.getAttribute('data-cat') == '' &&
+  //     event.target.tagName === 'INPUT'
+  //   ) {
+  //     let id = +parent.id.replace(/\D/g, '');
+  //     if (event.target.checked) {
+  //       arrayCheck.push(id);
+  //     } else {
+  //       arrayCheck.splice(arrayCheck.indexOf(id), 1);
+  //     }
+  //     let arrCat = arrayCategories.filter((item, index) =>
+  //       arrayCheck.includes(index)
+  //     );
+  //     console.log(arrCat);
+  //     filteringByCaterories(arrCat);
+  //   }
+  // });
+  // function filteringByCaterories(array) {
+  //   if (array.length === 0) {
+  //     currentLimit = 6;
+  //     pagination(currentLimit);
+  //   } else {
+  //     const promiseArray = array.map((category) => {
+  //       return fetch(
+  //         `https://fakestoreapi.com/products/category/${category}`
+  //       ).then((res) => res.json());
+  //     });
+  //     mainProductsList.innerHTML = '';
+  //     Promise.all(promiseArray)
+  //       .then((objectsArray) => {
+  //         objectsArray.forEach((products) => {
+  //           products.forEach((product) => {
+  //             fillDataProduct(product);
+  //           });
+  //         });
+  //         sumResults();
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //       });
+  //   }
+  // }
 });
